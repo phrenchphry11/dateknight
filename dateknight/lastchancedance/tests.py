@@ -6,11 +6,16 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+from django.test.client import RequestFactory
 
+import views
 
 class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+    def setUp(self):
+        # Every test needs access to the request factory.
+        self.factory = RequestFactory()
+
+    def test_details(self):
+        request = self.factory.get('/')
+        response = views.index(request)
+        self.assertEqual(response.status_code, 200)
