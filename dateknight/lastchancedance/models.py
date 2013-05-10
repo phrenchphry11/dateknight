@@ -8,15 +8,15 @@ class Student(models.Model):
 
     @property
     def directory_url(self):
-        return 'http://apps.carleton.edu/campus/directory/?email_address=' + self.carlnetid
+        return 'http://apps.carleton.edu/campus/directory/?email_address=%s' % self.carlnetid
 
     @property
     def photo(self):
-        return 'http://apps.carleton.edu/stock/ldapimage.php?id=' + self.carlnetid
+        return 'http://apps.carleton.edu/stock/ldapimage.php?id=%s' % self.carlnetid
 
     @property
     def email(self):
-        return self.carlnetid + '@carleton.edu'
+        return '%s@carleton.edu' % self.carlnetid
 
     @property
     def crushed_on(self):
@@ -26,25 +26,25 @@ class Student(models.Model):
         return unicode(self.carlnetid)
 
 class Crush(models.Model):
-    egg = models.ForeignKey(Student, related_name = 'out_crushes')
-    chicken = models.ForeignKey(Student, related_name = 'in_crushes')
+    egg = models.ForeignKey(Student, related_name='out_crushes')
+    chicken = models.ForeignKey(Student, related_name='in_crushes')
     time = models.DateTimeField(auto_now_add=True)
     deleted = models.BooleanField(default=False)
     deleted_time = models.DateTimeField(auto_now_add=False, blank=True, null=True)
 
     def __unicode__(self):
-        return unicode(self.source) + ' => ' + unicode(self.target)
+        return '%s => %s' % (unicode(self.egg), unicode(self.chicken))
 
     class Meta:
-        unique_together = ('source', 'target', 'time')
+        unique_together = ('egg', 'chicken', 'time')
 
 class Match(models.Model):
-    egg = models.ForeignKey(Student, related_name = 'out_matches')
-    chicken = models.ForeignKey(Student, related_name = 'in_matches')
+    egg = models.ForeignKey(Student, related_name='out_matches')
+    chicken = models.ForeignKey(Student, related_name='in_matches')
     match_time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return unicode(self.source) + ' <3 ' + unicode(self.target)
+        return '%s <3 %s' % (unicode(self.egg), unicode(self.chicken))
 
     class Meta:
         unique_together = (('egg', 'chicken'), ('chicken', 'egg'))

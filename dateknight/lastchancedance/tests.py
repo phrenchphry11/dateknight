@@ -15,7 +15,7 @@ class ViewTest(TestCase):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
 
-    def test_details(self):
+    def test_index(self):
         request = self.factory.get('/')
         response = views.index(request)
         self.assertEqual(response.status_code, 200)

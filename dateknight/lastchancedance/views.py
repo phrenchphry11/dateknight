@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
 
 from models import Student
-
+from utils import carl_to_dict
 
 @transaction.commit_manually()
 def index(request):
@@ -67,7 +67,19 @@ def confirm(request):
 
 @login_required
 def dashboard(request):
-    pass
+    carl = carl_to_dict(request.user.carl)
+    carl['crushed_on'] = request.user.carl.crushed_on
+
+    crushes = request.user.carl.out_crushes.all().filter(deleted=False)
+    crush_list = [carl_to_dict(crush.target) for crush in crushes]
+
+    recommendations = [carl_to_dict(r) for r in make_recommendations(request.user.carl)]
+
+    matches = Match.objects.filter(source=request.user.carl)
+    match_list = [carl_to_dict(match.target) for match in matches]
+
+    page_data = {'crushes': crush_list, 'suggestions': recommendations, 'matches': match_list, 'me': carl}
+    return render_to_response("dashboard.html", page_data, RequestContext(request))
 
 def logout_view(request):
     logout(request)
