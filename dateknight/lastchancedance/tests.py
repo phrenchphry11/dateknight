@@ -10,7 +10,7 @@ from django.test.client import RequestFactory
 
 import views
 
-class SimpleTest(TestCase):
+class ViewTest(TestCase):
     def setUp(self):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
