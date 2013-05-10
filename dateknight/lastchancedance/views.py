@@ -7,7 +7,8 @@ from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
 
 from form import AddCrush, DeleteCrush
-from models import Student
+from models import Match, Student
+from recommendations import KNN
 from utils import carl_to_dict
 
 @transaction.commit_manually()
@@ -86,8 +87,10 @@ def dashboard(request):
 
     crushes = request.user.carl.out_crushes.all().filter(deleted=False)
     crush_list = [carl_to_dict(crush.chicken) for crush in crushes]
-
-    recommendations = [carl_to_dict(r) for r in make_recommendations(request.user.carl)]
+    carl_list = Student.objects.all()
+    recommender = KNN(carl_list)
+    recs = recommender.getRecommendations()
+    recommendations = [carl_to_dict(r) for r in recs]
 
     matches = Match.objects.filter(egg=request.user.carl)
     match_list = [carl_to_dict(match.chicken) for match in matches]
