@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
 
+from form import AddCrush, DeleteCrush
 from models import Student
 from utils import carl_to_dict
 
@@ -49,7 +50,7 @@ def index(request):
             if user:
                 login(request, user)
                 transaction.commit()
-                return redirect('dashboard/')
+                return redirect("/dashboard/")
             else:
                 transaction.rollback()
                 return render_to_response("index.html", {'worked': 'false', 'error': 'invalid_login'}, RequestContext(request))
@@ -67,6 +68,19 @@ def confirm(request):
 
 @login_required
 def dashboard(request):
+    add_crush = AddCrush()
+    delete_crush = DeleteCrush()
+
+    if "add_crush" in request.POST:
+        add_crush = AddCrush(request.POST)
+        if add_crush.is_valid():
+            pass
+
+    if "delete_crush" in request.POST:
+        delete_crush = DeleteCrush(request.POST)
+        if delete_crush.is_valid():
+            pass
+
     carl = carl_to_dict(request.user.carl)
     carl['crushed_on'] = request.user.carl.crushed_on
 
