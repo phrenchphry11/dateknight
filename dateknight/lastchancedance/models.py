@@ -1,7 +1,7 @@
 from django.db import models
 
 class Student(models.Model):
-    email = models.CharField(max_lengt=200)
+    carlnetid = models.CharField(max_length=30, unique=True)
     first = models.CharField(max_length=200)
     last = models.CharField(max_length=200)
     year = models.IntField()
