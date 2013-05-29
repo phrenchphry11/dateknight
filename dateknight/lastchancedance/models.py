@@ -4,7 +4,7 @@ class Student(models.Model):
     carlnetid = models.CharField(max_length=30, unique=True)
     first = models.CharField(max_length=200)
     last = models.CharField(max_length=200)
-    year = models.IntField()
+    year = models.IntegerField()
 
     @property
     def directory_url(self):

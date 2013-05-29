@@ -1,4 +1,4 @@
-from dates.models import Student, Crush, Match
+from lastchancedance.models import Student, Crush, Match
 from django.contrib import admin
 
 admin.site.register(Student)

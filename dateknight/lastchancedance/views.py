@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
 
-from form import AddCrush, DeleteCrush
+from forms import AddCrush, DeleteCrush
 from models import Match, Student
 from recommendations import KNN
 from utils import carl_to_dict
